@@ -1,0 +1,21 @@
+{
+  "name": "SINERJI NAT Maintenance",
+  "short_name": "SINERJI NAT",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#663399",
+  "theme_color": "#663399",
+  "description": "Plateforme de gestion de maintenance SINERJI NAT - Interventions, pièces et commandes.",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+} 
