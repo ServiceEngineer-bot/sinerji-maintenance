@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution Radicale - Alignement Tableaux</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .solution { background: #e3f2fd; padding: 15px; margin: 15px 0; border-radius: 5px; border-left: 4px solid #2196f3; }
+        .warning { background: #fff3e0; padding: 15px; margin: 15px 0; border-radius: 5px; border-left: 4px solid #ff9800; }
+        .code { background: #f5f5f5; padding: 15px; border-radius: 5px; font-family: monospace; white-space: pre-wrap; margin: 10px 0; }
+        button { background: #2196f3; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #1976d2; }
+        .step { margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 5px; }
+        .step h3 { margin-top: 0; color: #333; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Solution Radicale - Alignement des Tableaux</h1>
+        
+        <div class="warning">
+            <h3>⚠️ ATTENTION</h3>
+            <p>Cette solution va <strong>réinitialiser complètement</strong> les styles des tableaux pour forcer l'alignement. Utilisez-la seulement si les autres solutions n'ont pas fonctionné.</p>
+        </div>
+
+        <div class="step">
+            <h3>Étape 1 : Diagnostic</h3>
+            <p>D'abord, exécutez ce code dans la console de votre application pour voir le problème exact :</p>
+            <div class="code">
+// Diagnostic complet des tableaux
+function diagnosticComplet() {
+    console.log('🔍 DIAGNOSTIC COMPLET DES TABLEAUX');
+    
+    const tables = ['interventions-table', 'pieces-table', 'commandes-table'];
+    
+    tables.forEach(tableId => {
+        const table = document.getElementById(tableId);
+        if (!table) {
+            console.log(`❌ Tableau ${tableId} non trouvé`);
+            return;
+        }
+        
+        console.log(`\n📊 ANALYSE: ${tableId}`);
+        
+        // Vérifier la structure
+        const thead = table.querySelector('thead');
+        const tbody = table.querySelector('tbody');
+        const headers = thead ? thead.querySelectorAll('th') : [];
+        const firstRow = tbody ? tbody.querySelector('tr') : null;
+        const cells = firstRow ? firstRow.querySelectorAll('td') : [];
+        
+        console.log(`Headers: ${headers.length}, Cells: ${cells.length}`);
+        
+        // Analyser chaque colonne
+        headers.forEach((header, index) => {
+            const cell = cells[index];
+            if (cell) {
+                const headerText = header.textContent.trim();
+                const cellText = cell.textContent.trim();
+                const headerWidth = header.offsetWidth;
+                const cellWidth = cell.offsetWidth;
+                
+                console.log(`Colonne ${index + 1}:`);
+                console.log(`  Header: "${headerText}" (${headerWidth}px)`);
+                console.log(`  Cell: "${cellText}" (${cellWidth}px)`);
+                console.log(`  Différence: ${Math.abs(headerWidth - cellWidth)}px`);
+            }
+        });
+    });
+}
+
+diagnosticComplet();
+            </div>
+            <button onclick="copyCode(this.previousElementSibling)">Copier le code</button>
+        </div>
+
+        <div class="step">
+            <h3>Étape 2 : Solution Radicale</h3>
+            <p>Si le diagnostic montre des problèmes, exécutez ce code pour forcer l'alignement :</p>
+            <div class="code">
+// SOLUTION RADICALE - Forcer l'alignement des tableaux
+function fixTableAlignment() {
+    console.log('🔧 APPLICATION DE LA SOLUTION RADICALE');
+    
+    // 1. Réinitialiser tous les styles des tableaux
+    const tables = ['interventions-table', 'pieces-table', 'commandes-table'];
+    
+    tables.forEach(tableId => {
+        const table = document.getElementById(tableId);
+        if (!table) return;
+        
+        // Forcer les styles de base
+        table.style.cssText = `
+            table-layout: fixed !important;
+            width: 100% !important;
+            border-collapse: collapse !important;
+            font-size: 0.875rem !important;
+        `;
+        
+        // Réinitialiser tous les th et td
+        const allCells = table.querySelectorAll('th, td');
+        allCells.forEach(cell => {
+            cell.style.cssText = `
+                box-sizing: border-box !important;
+                padding: 0.5rem 0.75rem !important;
+                border-bottom: 1px solid #e5e7eb !important;
+                vertical-align: middle !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                white-space: nowrap !important;
+            `;
+        });
+        
+        // Styles spécifiques pour les headers
+        const headers = table.querySelectorAll('th');
+        headers.forEach(header => {
+            header.style.cssText += `
+                background-color: #f8f9fa !important;
+                font-weight: 600 !important;
+                font-size: 0.75rem !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.5px !important;
+                border-bottom: 2px solid #dee2e6 !important;
+            `;
+        });
+        
+        // Styles spécifiques pour les cellules
+        const cells = table.querySelectorAll('td');
+        cells.forEach(cell => {
+            cell.style.cssText += `
+                background-color: #fff !important;
+                font-size: 0.875rem !important;
+            `;
+        });
+    });
+    
+    // 2. Forcer les largeurs spécifiques pour chaque tableau
+    forceSpecificWidths();
+    
+    console.log('✅ Solution radicale appliquée');
+}
+
+function forceSpecificWidths() {
+    // Interventions
+    const interventionsTable = document.getElementById('interventions-table');
+    if (interventionsTable) {
+        const widths = [20, 15, 12, 12, 12, 12, 17];
+        applyWidths(interventionsTable, widths);
+    }
+    
+    // Pièces
+    const piecesTable = document.getElementById('pieces-table');
+    if (piecesTable) {
+        const widths = [20, 15, 10, 12, 20, 23];
+        applyWidths(piecesTable, widths);
+    }
+    
+    // Commandes
+    const commandesTable = document.getElementById('commandes-table');
+    if (commandesTable) {
+        const widths = [15, 12, 20, 12, 15, 26];
+        applyWidths(commandesTable, widths);
+    }
+}
+
+function applyWidths(table, widths) {
+    const headers = table.querySelectorAll('th');
+    const firstRow = table.querySelector('tbody tr');
+    if (!firstRow) return;
+    
+    const cells = firstRow.querySelectorAll('td');
+    
+    widths.forEach((width, index) => {
+        if (headers[index]) {
+            headers[index].style.width = width + '% !important';
+            headers[index].style.minWidth = (width * 8) + 'px !important';
+        }
+        if (cells[index]) {
+            cells[index].style.width = width + '% !important';
+            cells[index].style.minWidth = (width * 8) + 'px !important';
+        }
+    });
+}
+
+// Appliquer la solution
+fixTableAlignment();
+            </div>
+            <button onclick="copyCode(this.previousElementSibling)">Copier le code</button>
+        </div>
+
+        <div class="step">
+            <h3>Étape 3 : Vérification</h3>
+            <p>Après avoir appliqué la solution, vérifiez le résultat :</p>
+            <div class="code">
+// Vérifier le résultat
+function verifierResultat() {
+    console.log('✅ VÉRIFICATION DU RÉSULTAT');
+    
+    const tables = ['interventions-table', 'pieces-table', 'commandes-table'];
+    
+    tables.forEach(tableId => {
+        const table = document.getElementById(tableId);
+        if (!table) return;
+        
+        const headers = table.querySelectorAll('th');
+        const firstRow = table.querySelector('tbody tr');
+        if (!firstRow) return;
+        
+        const cells = firstRow.querySelectorAll('td');
+        
+        console.log(`\n📊 VÉRIFICATION: ${tableId}`);
+        
+        headers.forEach((header, index) => {
+            const cell = cells[index];
+            if (cell) {
+                const headerWidth = header.offsetWidth;
+                const cellWidth = cell.offsetWidth;
+                const difference = Math.abs(headerWidth - cellWidth);
+                
+                if (difference <= 2) {
+                    console.log(`✅ Colonne ${index + 1}: OK (différence: ${difference}px)`);
+                } else {
+                    console.log(`❌ Colonne ${index + 1}: PROBLÈME (différence: ${difference}px)`);
+                }
+            }
+        });
+    });
+}
+
+verifierResultat();
+            </div>
+            <button onclick="copyCode(this.previousElementSibling)">Copier le code</button>
+        </div>
+
+        <div class="solution">
+            <h3>🎯 Instructions d'utilisation :</h3>
+            <ol>
+                <li><strong>Ouvrez votre application</strong> dans un navigateur</li>
+                <li><strong>Appuyez sur F12</strong> pour ouvrir la console</li>
+                <li><strong>Copiez et collez</strong> le code de l'Étape 1</li>
+                <li><strong>Analysez les résultats</strong> du diagnostic</li>
+                <li><strong>Si nécessaire</strong>, copiez et collez le code de l'Étape 2</li>
+                <li><strong>Vérifiez le résultat</strong> avec le code de l'Étape 3</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(element) {
+            const text = element.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Code copié dans le presse-papiers !');
+            }).catch(() => {
+                // Fallback pour les navigateurs plus anciens
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Code copié dans le presse-papiers !');
+            });
+        }
+    </script>
+</body>
+</html> 

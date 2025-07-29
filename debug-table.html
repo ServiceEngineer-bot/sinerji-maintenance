@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Table Alignment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+        }
+        .debug-cell {
+            background-color: #f8f9fa;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .highlight {
+            background-color: #fff3cd !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Debug - Alignement des Colonnes</h2>
+        
+        <div class="row">
+            <div class="col-12">
+                <h4>Tableau Interventions</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="debug-interventions-table" style="table-layout: fixed;">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 20%; min-width: 150px;" class="debug-cell">Équipement</th>
+                                <th style="width: 15%; min-width: 120px;" class="debug-cell">Demandeur</th>
+                                <th style="width: 12%; min-width: 100px;" class="debug-cell">Date demande</th>
+                                <th style="width: 12%; min-width: 100px;" class="debug-cell">Date prévue</th>
+                                <th style="width: 12%; min-width: 100px;" class="debug-cell">Statut</th>
+                                <th style="width: 12%; min-width: 100px;" class="debug-cell">Priorité</th>
+                                <th style="width: 17%; min-width: 120px;" class="text-center debug-cell">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="debug-interventions-body">
+                            <!-- Rempli par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <h4>Tableau Pièces</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="debug-pieces-table" style="table-layout: fixed;">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 20%;" class="debug-cell">Nom</th>
+                                <th style="width: 15%;" class="debug-cell">Référence</th>
+                                <th style="width: 10%;" class="debug-cell">Stock</th>
+                                <th style="width: 12%;" class="debug-cell">Prix</th>
+                                <th style="width: 20%;" class="debug-cell">Fournisseur</th>
+                                <th style="width: 23%;" class="text-center debug-cell">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="debug-pieces-body">
+                            <!-- Rempli par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <h4>Tableau Commandes</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="debug-commandes-table" style="table-layout: fixed;">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 15%;" class="debug-cell">Numéro</th>
+                                <th style="width: 12%;" class="debug-cell">Date</th>
+                                <th style="width: 20%;" class="debug-cell">Fournisseur</th>
+                                <th style="width: 12%;" class="debug-cell">Montant</th>
+                                <th style="width: 15%;" class="debug-cell">Statut</th>
+                                <th style="width: 26%;" class="text-center debug-cell">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="debug-commandes-body">
+                            <!-- Rempli par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <button class="btn btn-primary" onclick="highlightMisaligned()">Surligner les décalages</button>
+                <button class="btn btn-secondary" onclick="showColumnInfo()">Afficher info colonnes</button>
+                <button class="btn btn-info" onclick="fixAlignment()">Corriger automatiquement</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données de test
+        const testInterventions = [
+            {
+                equipement: "Système de ventilation",
+                demandeur: "Pierre Durand",
+                service: "Qualité",
+                dateDemande: "2024-06-10",
+                datePrevue: "2024-06-12",
+                statut: "Demande",
+                priorite: "Normale"
+            }
+        ];
+
+        const testPieces = [
+            {
+                nom: "Joint d'étanchéité",
+                reference: "JNT-001",
+                stock: 12,
+                prix: 5.50,
+                fournisseur: "Fournisseur A"
+            }
+        ];
+
+        const testCommandes = [
+            {
+                numero: "CMD-2024-001",
+                date: "2024-06-10",
+                fournisseur: "Fournisseur A",
+                montant: 150.00,
+                statut: "En attente"
+            }
+        ];
+
+        function createDebugRow(type, item, index) {
+            const row = document.createElement('tr');
+            
+            if (type === 'interventions') {
+                row.innerHTML = `<td style="width: 20%; vertical-align: middle; word-wrap: break-word;"><strong>${item.equipement}</strong></td><td style="width: 15%; vertical-align: middle;"><div style="display: flex; flex-direction: column; gap: 0.25rem;"><span style="font-weight: 500;">${item.demandeur}</span><small style="color: #6B7280; font-size: 0.75rem;">${item.service}</small></div></td><td style="width: 12%; vertical-align: middle; text-align: center;">${formatDate(item.dateDemande)}</td><td style="width: 12%; vertical-align: middle; text-align: center;">${formatDate(item.datePrevue)}</td><td style="width: 12%; vertical-align: middle; text-align: center;"><span class="badge bg-primary">${item.statut}</span></td><td style="width: 12%; vertical-align: middle; text-align: center;"><span class="badge bg-secondary">${item.priorite}</span></td><td style="width: 17%; vertical-align: middle; text-align: center;"><div style="display: flex; justify-content: center; gap: 0.5rem;"><button class="btn btn-sm btn-primary">Voir</button></div></td>`;
+            } else if (type === 'pieces') {
+                row.innerHTML = `<td style="width: 20%; vertical-align: middle;"><strong>${item.nom}</strong></td><td style="width: 15%; vertical-align: middle;"><code>${item.reference}</code></td><td style="width: 10%; vertical-align: middle; text-align: center;"><span class="badge bg-success">${item.stock}</span></td><td style="width: 12%; vertical-align: middle; text-align: center;">${item.prix.toFixed(2)} €</td><td style="width: 20%; vertical-align: middle;">${item.fournisseur}</td><td style="width: 23%; vertical-align: middle; text-align: center;"><div style="display: flex; justify-content: center; gap: 0.5rem;"><button class="btn btn-sm btn-primary">Voir</button></div></td>`;
+            } else if (type === 'commandes') {
+                row.innerHTML = `<td style="width: 15%; vertical-align: middle;"><strong>${item.numero}</strong></td><td style="width: 12%; vertical-align: middle; text-align: center;">${formatDate(item.date)}</td><td style="width: 20%; vertical-align: middle;">${item.fournisseur}</td><td style="width: 12%; vertical-align: middle; text-align: center;">${item.montant.toFixed(2)} €</td><td style="width: 15%; vertical-align: middle; text-align: center;"><span class="badge bg-warning">${item.statut}</span></td><td style="width: 26%; vertical-align: middle; text-align: center;"><div style="display: flex; justify-content: center; gap: 0.5rem;"><button class="btn btn-sm btn-primary">Voir</button></div></td>`;
+            }
+            
+            return row;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR');
+        }
+
+        function loadDebugTables() {
+            // Interventions
+            const interventionsBody = document.getElementById('debug-interventions-body');
+            interventionsBody.innerHTML = '';
+            testInterventions.forEach((item, index) => {
+                const row = createDebugRow('interventions', item, index);
+                interventionsBody.appendChild(row);
+            });
+
+            // Pièces
+            const piecesBody = document.getElementById('debug-pieces-body');
+            piecesBody.innerHTML = '';
+            testPieces.forEach((item, index) => {
+                const row = createDebugRow('pieces', item, index);
+                piecesBody.appendChild(row);
+            });
+
+            // Commandes
+            const commandesBody = document.getElementById('debug-commandes-body');
+            commandesBody.innerHTML = '';
+            testCommandes.forEach((item, index) => {
+                const row = createDebugRow('commandes', item, index);
+                commandesBody.appendChild(row);
+            });
+        }
+
+        function highlightMisaligned() {
+            const tables = ['debug-interventions-table', 'debug-pieces-table', 'debug-commandes-table'];
+            
+            tables.forEach(tableId => {
+                const table = document.getElementById(tableId);
+                const headers = table.querySelectorAll('thead th');
+                const firstRow = table.querySelector('tbody tr');
+                
+                if (firstRow) {
+                    const cells = firstRow.querySelectorAll('td');
+                    
+                    headers.forEach((header, index) => {
+                        if (cells[index]) {
+                            const headerWidth = header.offsetWidth;
+                            const cellWidth = cells[index].offsetWidth;
+                            
+                            if (Math.abs(headerWidth - cellWidth) > 5) {
+                                header.style.backgroundColor = '#ffebee';
+                                cells[index].style.backgroundColor = '#ffebee';
+                                console.log(`Décalage détecté dans ${tableId}, colonne ${index}: header=${headerWidth}px, cell=${cellWidth}px`);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function showColumnInfo() {
+            const tables = ['debug-interventions-table', 'debug-pieces-table', 'debug-commandes-table'];
+            
+            tables.forEach(tableId => {
+                console.log(`\n=== ${tableId} ===`);
+                const table = document.getElementById(tableId);
+                const headers = table.querySelectorAll('thead th');
+                const firstRow = table.querySelector('tbody tr');
+                
+                if (firstRow) {
+                    const cells = firstRow.querySelectorAll('td');
+                    
+                    headers.forEach((header, index) => {
+                        if (cells[index]) {
+                            console.log(`Colonne ${index}: Header="${header.textContent.trim()}" (${header.offsetWidth}px) | Cell="${cells[index].textContent.trim()}" (${cells[index].offsetWidth}px)`);
+                        }
+                    });
+                }
+            });
+        }
+
+        function fixAlignment() {
+            // Appliquer des styles CSS plus stricts
+            const style = document.createElement('style');
+            style.textContent = `
+                .table {
+                    table-layout: fixed !important;
+                }
+                .table th, .table td {
+                    box-sizing: border-box !important;
+                    overflow: hidden !important;
+                    text-overflow: ellipsis !important;
+                }
+                .table th:nth-child(1), .table td:nth-child(1) { width: 20% !important; }
+                .table th:nth-child(2), .table td:nth-child(2) { width: 15% !important; }
+                .table th:nth-child(3), .table td:nth-child(3) { width: 12% !important; }
+                .table th:nth-child(4), .table td:nth-child(4) { width: 12% !important; }
+                .table th:nth-child(5), .table td:nth-child(5) { width: 12% !important; }
+                .table th:nth-child(6), .table td:nth-child(6) { width: 12% !important; }
+                .table th:nth-child(7), .table td:nth-child(7) { width: 17% !important; }
+            `;
+            document.head.appendChild(style);
+            
+            alert('Styles de correction appliqués ! Rechargez la page pour voir les changements.');
+        }
+
+        // Charger les tableaux au démarrage
+        document.addEventListener('DOMContentLoaded', loadDebugTables);
+    </script>
+</body>
+</html> 

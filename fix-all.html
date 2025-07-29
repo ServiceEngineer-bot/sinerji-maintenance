@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Correction Tableaux</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; font-family: Arial, sans-serif; }
+        .test-table { 
+            table-layout: fixed; 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0;
+        }
+        .test-table th, .test-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+        .test-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .test-table td {
+            background-color: white;
+        }
+        .col-1 { width: 20%; }
+        .col-2 { width: 15%; }
+        .col-3 { width: 12%; }
+        .col-4 { width: 12%; }
+        .col-5 { width: 12%; }
+        .col-6 { width: 12%; }
+        .col-7 { width: 17%; }
+        .btn { margin: 5px; }
+        .result { 
+            background: #f0f0f0; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Test - Correction Tableaux</h1>
+    
+    <div>
+        <button onclick="testAlignment()" class="btn btn-primary">Tester l'alignement</button>
+        <button onclick="fixAlignment()" class="btn btn-success">Corriger l'alignement</button>
+        <button onclick="showContent()" class="btn btn-info">Voir le contenu</button>
+    </div>
+
+    <div id="result" class="result"></div>
+
+    <h3>Tableau de Test</h3>
+    <table class="test-table">
+        <thead>
+            <tr>
+                <th class="col-1">Équipement</th>
+                <th class="col-2">Demandeur</th>
+                <th class="col-3">Date demande</th>
+                <th class="col-4">Date prévue</th>
+                <th class="col-5">Statut</th>
+                <th class="col-6">Priorité</th>
+                <th class="col-7">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-1"><strong>Système de ventilation</strong></td>
+                <td class="col-2">
+                    <div>
+                        <span style="font-weight: 500;">Pierre Durand</span><br>
+                        <small style="color: #6B7280;">Qualité</small>
+                    </div>
+                </td>
+                <td class="col-3">10/06/2024</td>
+                <td class="col-4">12/06/2024</td>
+                <td class="col-5"><span class="badge bg-primary">Demande</span></td>
+                <td class="col-6"><span class="badge bg-secondary">Normale</span></td>
+                <td class="col-7">
+                    <button class="btn btn-sm btn-primary">Voir</button>
+                    <button class="btn btn-sm btn-warning">Modifier</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-1"><strong>Pompe hydraulique avec un nom très long pour tester le wrapping</strong></td>
+                <td class="col-2">
+                    <div>
+                        <span style="font-weight: 500;">Jean Dupont</span><br>
+                        <small style="color: #6B7280;">Production</small>
+                    </div>
+                </td>
+                <td class="col-3">01/06/2024</td>
+                <td class="col-4">05/06/2024</td>
+                <td class="col-5"><span class="badge bg-warning">En cours</span></td>
+                <td class="col-6"><span class="badge bg-danger">Haute</span></td>
+                <td class="col-7">
+                    <button class="btn btn-sm btn-primary">Voir</button>
+                    <button class="btn btn-sm btn-warning">Modifier</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function testAlignment() {
+            const table = document.querySelector('.test-table');
+            const headers = table.querySelectorAll('th');
+            const firstRow = table.querySelector('tbody tr');
+            const cells = firstRow.querySelectorAll('td');
+            
+            let result = '<h4>Résultat du test :</h4>';
+            result += `<p>Headers: ${headers.length}, Cells: ${cells.length}</p>`;
+            
+            headers.forEach((header, index) => {
+                const cell = cells[index];
+                if (cell) {
+                    const headerWidth = header.offsetWidth;
+                    const cellWidth = cell.offsetWidth;
+                    const difference = Math.abs(headerWidth - cellWidth);
+                    
+                    result += `<p>Colonne ${index + 1}: Header=${headerWidth}px, Cell=${cellWidth}px, Différence=${difference}px</p>`;
+                }
+            });
+            
+            document.getElementById('result').innerHTML = result;
+        }
+
+        function fixAlignment() {
+            const table = document.querySelector('.test-table');
+            table.style.tableLayout = 'fixed';
+            table.style.width = '100%';
+            
+            const allCells = table.querySelectorAll('th, td');
+            allCells.forEach(cell => {
+                cell.style.boxSizing = 'border-box';
+                cell.style.overflow = 'hidden';
+                cell.style.textOverflow = 'ellipsis';
+            });
+            
+            document.getElementById('result').innerHTML = '<h4>Correction appliquée !</h4><p>Rechargez la page pour voir les changements.</p>';
+        }
+
+        function showContent() {
+            const table = document.querySelector('.test-table');
+            const cells = table.querySelectorAll('td');
+            
+            let result = '<h4>Contenu des cellules :</h4>';
+            cells.forEach((cell, index) => {
+                result += `<p>Cellule ${index + 1}: "${cell.textContent.trim()}"</p>`;
+            });
+            
+            document.getElementById('result').innerHTML = result;
+        }
+
+        // Test automatique au chargement
+        window.onload = function() {
+            setTimeout(testAlignment, 1000);
+        };
+    </script>
+</body>
+</html> 
