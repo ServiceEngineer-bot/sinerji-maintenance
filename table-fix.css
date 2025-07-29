@@ -1,0 +1,281 @@
+/* ========================================
+   SOLUTION RADICALE - CORRECTION TABLEAUX CSS
+   ======================================== */
+
+/* RÉINITIALISATION COMPLÈTE DES TABLEAUX */
+#interventions-table,
+#pieces-table,
+#commandes-table {
+    table-layout: fixed !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 0.875rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* FORCER LES STYLES DE BASE POUR TOUS LES TH ET TD */
+#interventions-table th,
+#pieces-table th,
+#commandes-table th {
+    box-sizing: border-box !important;
+    padding: 0.5rem 0.75rem !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    vertical-align: middle !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    font-size: 0.875rem !important;
+    line-height: 1.4 !important;
+}
+
+#interventions-table td,
+#pieces-table td,
+#commandes-table td {
+    box-sizing: border-box !important;
+    padding: 0.5rem 0.75rem !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    vertical-align: middle !important;
+    margin: 0 !important;
+    font-size: 0.875rem !important;
+    line-height: 1.4 !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+}
+
+/* STYLES SPÉCIFIQUES POUR LES EN-TÊTES */
+#interventions-table th,
+#pieces-table th,
+#commandes-table th {
+    background-color: #f8f9fa !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border-bottom: 2px solid #dee2e6 !important;
+    color: #495057 !important;
+    text-align: left !important;
+}
+
+/* STYLES SPÉCIFIQUES POUR LES CELLULES */
+#interventions-table td,
+#pieces-table td,
+#commandes-table td {
+    background-color: #fff !important;
+    font-size: 0.875rem !important;
+    color: #212529 !important;
+}
+
+/* HOVER EFFECTS */
+#interventions-table tbody tr:hover td,
+#pieces-table tbody tr:hover td,
+#commandes-table tbody tr:hover td {
+    background-color: #f8f9fa !important;
+}
+
+/* LARGEURS FORCÉES POUR INTERVENTIONS */
+#interventions-table th:nth-child(1),
+#interventions-table td:nth-child(1) {
+    width: 20% !important;
+    min-width: 150px !important;
+    max-width: 200px !important;
+}
+
+#interventions-table th:nth-child(2),
+#interventions-table td:nth-child(2) {
+    width: 15% !important;
+    min-width: 120px !important;
+    max-width: 150px !important;
+}
+
+#interventions-table th:nth-child(3),
+#interventions-table td:nth-child(3) {
+    width: 12% !important;
+    min-width: 100px !important;
+    max-width: 120px !important;
+    text-align: center !important;
+}
+
+#interventions-table th:nth-child(4),
+#interventions-table td:nth-child(4) {
+    width: 12% !important;
+    min-width: 100px !important;
+    max-width: 120px !important;
+    text-align: center !important;
+}
+
+#interventions-table th:nth-child(5),
+#interventions-table td:nth-child(5) {
+    width: 12% !important;
+    min-width: 100px !important;
+    max-width: 120px !important;
+    text-align: center !important;
+}
+
+#interventions-table th:nth-child(6),
+#interventions-table td:nth-child(6) {
+    width: 12% !important;
+    min-width: 100px !important;
+    max-width: 120px !important;
+    text-align: center !important;
+}
+
+#interventions-table th:nth-child(7),
+#interventions-table td:nth-child(7) {
+    width: 17% !important;
+    min-width: 120px !important;
+    max-width: 200px !important;
+    text-align: center !important;
+}
+
+/* LARGEURS FORCÉES POUR PIÈCES */
+#pieces-table th:nth-child(1),
+#pieces-table td:nth-child(1) {
+    width: 20% !important;
+    min-width: 150px !important;
+    max-width: 200px !important;
+}
+
+#pieces-table th:nth-child(2),
+#pieces-table td:nth-child(2) {
+    width: 15% !important;
+    min-width: 120px !important;
+    max-width: 150px !important;
+}
+
+#pieces-table th:nth-child(3),
+#pieces-table td:nth-child(3) {
+    width: 10% !important;
+    min-width: 80px !important;
+    max-width: 100px !important;
+    text-align: center !important;
+}
+
+#pieces-table th:nth-child(4),
+#pieces-table td:nth-child(4) {
+    width: 12% !important;
+    min-width: 100px !important;
+    max-width: 120px !important;
+    text-align: center !important;
+}
+
+#pieces-table th:nth-child(5),
+#pieces-table td:nth-child(5) {
+    width: 20% !important;
+    min-width: 150px !important;
+    max-width: 200px !important;
+}
+
+#pieces-table th:nth-child(6),
+#pieces-table td:nth-child(6) {
+    width: 23% !important;
+    min-width: 150px !important;
+    max-width: 250px !important;
+    text-align: center !important;
+}
+
+/* LARGEURS FORCÉES POUR COMMANDES */
+#commandes-table th:nth-child(1),
+#commandes-table td:nth-child(1) {
+    width: 15% !important;
+    min-width: 120px !important;
+    max-width: 150px !important;
+}
+
+#commandes-table th:nth-child(2),
+#commandes-table td:nth-child(2) {
+    width: 12% !important;
+    min-width: 100px !important;
+    max-width: 120px !important;
+    text-align: center !important;
+}
+
+#commandes-table th:nth-child(3),
+#commandes-table td:nth-child(3) {
+    width: 20% !important;
+    min-width: 150px !important;
+    max-width: 200px !important;
+}
+
+#commandes-table th:nth-child(4),
+#commandes-table td:nth-child(4) {
+    width: 12% !important;
+    min-width: 100px !important;
+    max-width: 120px !important;
+    text-align: center !important;
+}
+
+#commandes-table th:nth-child(5),
+#commandes-table td:nth-child(5) {
+    width: 15% !important;
+    min-width: 120px !important;
+    max-width: 150px !important;
+    text-align: center !important;
+}
+
+#commandes-table th:nth-child(6),
+#commandes-table td:nth-child(6) {
+    width: 26% !important;
+    min-width: 150px !important;
+    max-width: 250px !important;
+    text-align: center !important;
+}
+
+/* CORRECTION DES BADGES */
+.badge {
+    display: inline-block !important;
+    min-width: 60px !important;
+    padding: 0.25rem 0.5rem !important;
+    text-align: center !important;
+    border-radius: 0.25rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.2s ease !important;
+}
+
+/* CORRECTION DES BOUTONS */
+.btn-sm {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 0.25rem !important;
+    font-weight: 500 !important;
+    border: 1px solid transparent !important;
+    transition: all 0.2s ease !important;
+}
+
+/* SUPPRIMER TOUS LES STYLES BOOTSTRAP CONFLICTUELS */
+.table-responsive {
+    overflow-x: auto !important;
+}
+
+/* FORCER L'AFFICHAGE CORRECT */
+.table {
+    margin-bottom: 0 !important;
+}
+
+/* CORRECTION POUR LES ICÔNES DANS LES CELLULES */
+.table td i,
+.table th i {
+    font-size: 0.875rem !important;
+}
+
+/* CORRECTION POUR LE TEXTE DANS LES CELLULES */
+.table td strong {
+    font-weight: 600 !important;
+    color: #212529 !important;
+}
+
+.table td small {
+    font-size: 0.75rem !important;
+    color: #6c757d !important;
+}
+
+.table td code {
+    font-size: 0.75rem !important;
+    background-color: #f8f9fa !important;
+    padding: 0.125rem 0.25rem !important;
+    border-radius: 0.125rem !important;
+} 
