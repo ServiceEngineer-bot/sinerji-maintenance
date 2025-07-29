@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Maintenance - Version Propre</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4F46E5;
+            --secondary-color: #6B7280;
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --danger-color: #EF4444;
+            --light-bg: #F9FAFB;
+            --border-color: #E5E7EB;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --font-size-sm: 0.875rem;
+            --font-size-xs: 0.75rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 0.75rem;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* LOGIN SCREEN */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+            animation: slideInUp 0.6s ease;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, var(--primary-color), #6366F1);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-header h2 {
+            margin: 0;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin: 1rem;
+            padding: 0.25rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), #6366F1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .login-form {
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn-block {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, var(--primary-color), #6366F1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        /* MAIN APP */
+        .main-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), #6366F1);
+            padding: 1.5rem 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar-brand i {
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .user-info {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #6366F1);
+            border-radius: 2px;
+        }
+
+        /* TABLEAUX - SOLUTION PROPRE */
+        .clean-table {
+            table-layout: fixed !important;
+            width: 100% !important;
+            border-collapse: collapse !important;
+            margin: 20px 0 !important;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .clean-table th, .clean-table td {
+            border: none !important;
+            padding: 12px 16px !important;
+            text-align: left !important;
+            vertical-align: middle !important;
+            word-wrap: break-word !important;
+            word-break: break-word !important;
+            box-sizing: border-box !important;
+        }
+
+        .clean-table th {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+            font-weight: 600 !important;
+            color: var(--text-primary) !important;
+            font-size: 0.875rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            border-bottom: 2px solid var(--primary-color) !important;
+        }
+
+        .clean-table td {
+            background-color: white !important;
+            border-bottom: 1px solid #f1f3f4 !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .clean-table tbody tr:hover td {
+            background-color: #f8f9fa !important;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* Largeurs fixes comme dans fix-all.html */
+        .col-1 { width: 20% !important; }
+        .col-2 { width: 15% !important; }
+        .col-3 { width: 12% !important; }
+        .col-4 { width: 12% !important; }
+        .col-5 { width: 12% !important; }
+        .col-6 { width: 12% !important; }
+        .col-7 { width: 17% !important; }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #6366F1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color), #F59E0B);
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color), #DC2626);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        .badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .bg-primary { 
+            background: linear-gradient(135deg, var(--primary-color), #6366F1) !important; 
+            color: white !important;
+        }
+        .bg-warning { 
+            background: linear-gradient(135deg, var(--warning-color), #F59E0B) !important; 
+            color: white !important;
+        }
+        .bg-success { 
+            background: linear-gradient(135deg, var(--success-color), #059669) !important; 
+            color: white !important;
+        }
+        .bg-secondary { 
+            background: linear-gradient(135deg, var(--secondary-color), #4B5563) !important; 
+            color: white !important;
+        }
+        .bg-danger { 
+            background: linear-gradient(135deg, var(--danger-color), #DC2626) !important; 
+            color: white !important;
+        }
+
+        .nav-tabs {
+            border: none;
+            margin-bottom: 2rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 0.5rem;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--text-secondary);
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 0 0.25rem;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color), #6366F1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .tab-content {
+            padding: 1rem 0;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), #6366F1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), #6366F1);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(79, 70, 229, 0.5);
+        }
+
+        .fab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .fab i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SCREEN -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h2>Gestion Maintenance</h2>
+                <p>Connectez-vous à votre compte</p>
+            </div>
+            
+            <div class="login-tabs">
+                <button class="tab-btn active" onclick="switchTab('admin')">
+                    <i class="fas fa-user-shield"></i> Admin
+                </button>
+                <button class="tab-btn" onclick="switchTab('client')">
+                    <i class="fas fa-user"></i> Client
+                </button>
+            </div>
+
+            <!-- Admin Login -->
+            <form class="login-form active" id="adminForm">
+                <div class="form-group">
+                    <label for="adminUsername">Nom d'utilisateur</label>
+                    <input type="text" id="adminUsername" class="form-control" placeholder="admin" value="admin">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Mot de passe</label>
+                    <input type="password" id="adminPassword" class="form-control" placeholder="admin123" value="admin123">
+                </div>
+                <button type="submit" class="btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+            </form>
+
+            <!-- Client Login -->
+            <form class="login-form" id="clientForm">
+                <div class="form-group">
+                    <label for="clientUsername">Nom d'utilisateur</label>
+                    <input type="text" id="clientUsername" class="form-control" placeholder="pierre.durand" value="pierre.durand">
+                </div>
+                <div class="form-group">
+                    <label for="clientPassword">Mot de passe</label>
+                    <input type="password" id="clientPassword" class="form-control" placeholder="client123" value="client123">
+                </div>
+                <button type="submit" class="btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div class="main-container" id="mainApp">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <i class="fas fa-tools"></i>
+                Gestion Maintenance
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span id="userDisplayName">Admin</span>
+                <span id="userRole">(Admin)</span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 class="section-title">
+                <i class="fas fa-chart-line"></i>
+                Tableau de Bord
+            </h1>
+
+            <!-- Statistiques -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-wrench"></i>
+                    </div>
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Interventions en cours</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="stat-number">45</div>
+                    <div class="stat-label">Pièces en stock</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Commandes en attente</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">Interventions terminées</div>
+                </div>
+            </div>
+
+            <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="interventions-tab" data-bs-toggle="tab" data-bs-target="#interventions" type="button" role="tab">
+                        <i class="fas fa-wrench"></i> Interventions
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation" id="piecesTab">
+                    <button class="nav-link" id="pieces-tab" data-bs-toggle="tab" data-bs-target="#pieces" type="button" role="tab">
+                        <i class="fas fa-cogs"></i> Pièces
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation" id="commandesTab">
+                    <button class="nav-link" id="commandes-tab" data-bs-toggle="tab" data-bs-target="#commandes" type="button" role="tab">
+                        <i class="fas fa-shopping-cart"></i> Commandes
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="mainTabsContent">
+                <!-- INTERVENTIONS -->
+                <div class="tab-pane fade show active" id="interventions" role="tabpanel">
+                    <div id="adminInterventionsView">
+                        <h3><i class="fas fa-wrench"></i> Gestion des Interventions</h3>
+                        <table class="clean-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-1">Équipement</th>
+                                    <th class="col-2">Demandeur</th>
+                                    <th class="col-3">Date demande</th>
+                                    <th class="col-4">Date prévue</th>
+                                    <th class="col-5">Statut</th>
+                                    <th class="col-6">Priorité</th>
+                                    <th class="col-7">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="col-1"><strong>Système de ventilation</strong></td>
+                                    <td class="col-2">
+                                        <div>
+                                            <span style="font-weight: 500;">Pierre Durand</span><br>
+                                            <small style="color: #6B7280;">Qualité</small>
+                                        </div>
+                                    </td>
+                                    <td class="col-3">10/06/2024</td>
+                                    <td class="col-4">12/06/2024</td>
+                                    <td class="col-5"><span class="badge bg-primary">Demande</span></td>
+                                    <td class="col-6"><span class="badge bg-secondary">Normale</span></td>
+                                    <td class="col-7">
+                                        <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Modifier</button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Supprimer</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-1"><strong>Pompe hydraulique</strong></td>
+                                    <td class="col-2">
+                                        <div>
+                                            <span style="font-weight: 500;">Jean Dupont</span><br>
+                                            <small style="color: #6B7280;">Production</small>
+                                        </div>
+                                    </td>
+                                    <td class="col-3">01/06/2024</td>
+                                    <td class="col-4">05/06/2024</td>
+                                    <td class="col-5"><span class="badge bg-warning">En cours</span></td>
+                                    <td class="col-6"><span class="badge bg-danger">Haute</span></td>
+                                    <td class="col-7">
+                                        <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Modifier</button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Supprimer</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="clientInterventionsView" style="display: none;">
+                        <h3><i class="fas fa-wrench"></i> Mes Demandes d'Intervention</h3>
+                        
+                        <!-- Formulaire de nouvelle demande -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-plus"></i> Nouvelle Demande d'Intervention</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="interventionForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="equipmentName">Nom de l'Équipement *</label>
+                                                <input type="text" id="equipmentName" class="form-control" required placeholder="Ex: Pompe hydraulique XR-2000">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="equipmentReference">Référence Machine *</label>
+                                                <input type="text" id="equipmentReference" class="form-control" required placeholder="Ex: REF-MACH-001">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="equipmentLocation">Localisation</label>
+                                                <input type="text" id="equipmentLocation" class="form-control" placeholder="Ex: Atelier Production, Zone A">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="priority">Priorité</label>
+                                                <select id="priority" class="form-control">
+                                                    <option value="normale">Normale</option>
+                                                    <option value="haute">Haute</option>
+                                                    <option value="urgente">Urgente</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="problemDescription">Description du Problème *</label>
+                                        <textarea id="problemDescription" class="form-control" rows="3" required placeholder="Décrivez le problème rencontré..."></textarea>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="errorImage">Capture d'écran ou Image d'erreur</label>
+                                        <input type="file" id="errorImage" class="form-control" accept="image/*">
+                                        <small class="text-muted">Ajoutez une capture d'écran de l'erreur ou une photo du problème (JPG, PNG, GIF - max 5MB)</small>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane"></i> Envoyer la Demande
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Tableau des demandes du client -->
+                        <h4><i class="fas fa-list"></i> Mes Demandes</h4>
+                        <table class="clean-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-1">Équipement</th>
+                                    <th class="col-2">Description du Problème</th>
+                                    <th class="col-3">Date</th>
+                                    <th class="col-4">Priorité</th>
+                                    <th class="col-5">Statut</th>
+                                    <th class="col-6">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientInterventionsTable">
+                                <!-- Les demandes du client seront ajoutées ici dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PIÈCES -->
+                <div class="tab-pane fade" id="pieces" role="tabpanel">
+                    <div id="adminPiecesView">
+                        <h3><i class="fas fa-cogs"></i> Gestion des Pièces</h3>
+                        <table class="clean-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-1">Nom</th>
+                                    <th class="col-2">Référence</th>
+                                    <th class="col-3">Stock</th>
+                                    <th class="col-4">Prix</th>
+                                    <th class="col-5">Fournisseur</th>
+                                    <th class="col-6">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="col-1"><strong>Joint d'étanchéité</strong></td>
+                                    <td class="col-2"><code>JNT-001</code></td>
+                                    <td class="col-3"><span class="badge bg-success">12</span></td>
+                                    <td class="col-4">5.50 €</td>
+                                    <td class="col-5">Fournisseur A</td>
+                                    <td class="col-6">
+                                        <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Modifier</button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Supprimer</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="clientPiecesView" style="display: none;">
+                        <h3><i class="fas fa-shopping-cart"></i> Commander une Pièce de Rechange</h3>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <form id="pieceOrderForm">
+                                    <div class="form-group">
+                                        <label for="machineName">Nom de la Machine *</label>
+                                        <input type="text" id="machineName" class="form-control" required placeholder="Ex: Pompe hydraulique XR-2000">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="serialNumber">Numéro de Série *</label>
+                                        <input type="text" id="serialNumber" class="form-control" required placeholder="Ex: SN-2024-001234">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="pieceReference">Référence Client de la Pièce *</label>
+                                        <input type="text" id="pieceReference" class="form-control" required placeholder="Ex: REF-CLIENT-001">
+                                    </div>
+                                    
+
+                                    
+                                    <div class="form-group">
+                                        <label for="pieceImage">Image de la Pièce</label>
+                                        <input type="file" id="pieceImage" class="form-control" accept="image/*">
+                                        <small class="text-muted">Formats acceptés: JPG, PNG, GIF (max 5MB)</small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="urgency">Urgence</label>
+                                        <select id="urgency" class="form-control">
+                                            <option value="normale">Normale</option>
+                                            <option value="haute">Haute</option>
+                                            <option value="urgente">Urgente</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane"></i> Envoyer la Commande
+                                    </button>
+                                </form>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5><i class="fas fa-info-circle"></i> Informations</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Comment commander :</strong></p>
+                                        <ol>
+                                            <li>Remplissez tous les champs obligatoires (*)</li>
+                                            <li>Ajoutez une image si possible</li>
+                                            <li>Indiquez le niveau d'urgence</li>
+                                            <li>Cliquez sur "Envoyer la Commande"</li>
+                                        </ol>
+                                        <p><strong>Délai de traitement :</strong></p>
+                                        <ul>
+                                            <li>Normale : 3-5 jours</li>
+                                            <li>Haute : 1-2 jours</li>
+                                            <li>Urgente : 24h</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMMANDES -->
+                <div class="tab-pane fade" id="commandes" role="tabpanel">
+                    <div id="adminCommandesView">
+                        <h3><i class="fas fa-shopping-cart"></i> Gestion des Commandes</h3>
+                        <table class="clean-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-1">Numéro</th>
+                                    <th class="col-2">Date</th>
+                                    <th class="col-3">Fournisseur</th>
+                                    <th class="col-4">Montant</th>
+                                    <th class="col-5">Statut</th>
+                                    <th class="col-6">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="col-1"><strong>CMD-2024-001</strong></td>
+                                    <td class="col-2">10/06/2024</td>
+                                    <td class="col-3">Fournisseur A</td>
+                                    <td class="col-4">150.00 €</td>
+                                    <td class="col-5"><span class="badge bg-warning">En attente</span></td>
+                                    <td class="col-6">
+                                        <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Modifier</button>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Supprimer</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="clientCommandesView" style="display: none;">
+                        <h3><i class="fas fa-list"></i> Mes Commandes de Pièces</h3>
+                        <table class="clean-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-1">Date</th>
+                                    <th class="col-2">Machine</th>
+                                    <th class="col-3">Référence</th>
+                                    <th class="col-4">Urgence</th>
+                                    <th class="col-5">Statut</th>
+                                    <th class="col-6">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientCommandesTable">
+                                <!-- Les commandes du client seront ajoutées ici dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton d'action flottant -->
+    <div class="fab" id="fabButton" onclick="alert('Ajouter une nouvelle intervention')">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Variables globales
+        let currentUser = null;
+        let isAdmin = false;
+
+        // Fonction pour changer d'onglet de connexion
+        function switchTab(type) {
+            const adminForm = document.getElementById('adminForm');
+            const clientForm = document.getElementById('clientForm');
+            const adminTab = document.querySelector('.tab-btn:first-child');
+            const clientTab = document.querySelector('.tab-btn:last-child');
+
+            if (type === 'admin') {
+                adminForm.classList.add('active');
+                clientForm.classList.remove('active');
+                adminTab.classList.add('active');
+                clientTab.classList.remove('active');
+            } else {
+                clientForm.classList.add('active');
+                adminForm.classList.remove('active');
+                clientTab.classList.add('active');
+                adminTab.classList.remove('active');
+            }
+        }
+
+        // Gestion de la connexion Admin
+        document.getElementById('adminForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (username === 'admin' && password === 'admin123') {
+                login('admin', 'Administrateur');
+            } else {
+                alert('Identifiants incorrects pour l\'admin');
+            }
+        });
+
+        // Gestion de la connexion Client
+        document.getElementById('clientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('clientUsername').value;
+            const password = document.getElementById('clientPassword').value;
+
+            if (username === 'pierre.durand' && password === 'client123') {
+                login('client', 'Pierre Durand');
+            } else {
+                alert('Identifiants incorrects pour le client');
+            }
+        });
+
+        // Fonction de connexion
+        function login(type, displayName) {
+            currentUser = { type, displayName };
+            isAdmin = type === 'admin';
+            
+            // Masquer l'écran de connexion
+            document.getElementById('loginScreen').style.display = 'none';
+            
+            // Afficher l'application principale
+            document.getElementById('mainApp').style.display = 'block';
+            
+            // Mettre à jour l'affichage utilisateur
+            document.getElementById('userDisplayName').textContent = displayName;
+            document.getElementById('userRole').textContent = `(${type === 'admin' ? 'Admin' : 'Client'})`;
+            
+            // Gérer les privilèges
+            setupPrivileges();
+            
+            // Test d'alignement
+            setTimeout(testAlignment, 1000);
+        }
+
+        // Fonction de déconnexion
+        function logout() {
+            currentUser = null;
+            isAdmin = false;
+            
+            // Masquer l'application principale
+            document.getElementById('mainApp').style.display = 'none';
+            
+            // Afficher l'écran de connexion
+            document.getElementById('loginScreen').style.display = 'flex';
+            
+            // Réinitialiser les formulaires
+            document.getElementById('adminForm').reset();
+            document.getElementById('clientForm').reset();
+        }
+
+        // Configuration des privilèges
+        function setupPrivileges() {
+            const piecesTab = document.getElementById('piecesTab');
+            const commandesTab = document.getElementById('commandesTab');
+            const statsGrid = document.getElementById('statsGrid');
+            const fabButton = document.getElementById('fabButton');
+
+            if (isAdmin) {
+                // Admin : accès complet
+                piecesTab.classList.remove('hidden');
+                commandesTab.classList.remove('hidden');
+                statsGrid.classList.remove('hidden');
+                fabButton.classList.remove('hidden');
+                
+                // Afficher les vues admin
+                document.getElementById('adminInterventionsView').style.display = 'block';
+                document.getElementById('clientInterventionsView').style.display = 'none';
+                document.getElementById('adminPiecesView').style.display = 'block';
+                document.getElementById('clientPiecesView').style.display = 'none';
+                document.getElementById('adminCommandesView').style.display = 'block';
+                document.getElementById('clientCommandesView').style.display = 'none';
+            } else {
+                // Client : accès limité mais avec nouvelles fonctionnalités
+                piecesTab.classList.remove('hidden'); // Client peut commander des pièces
+                commandesTab.classList.remove('hidden'); // Client peut voir ses commandes
+                statsGrid.classList.add('hidden');
+                fabButton.classList.remove('hidden');
+                
+                // Afficher les vues client
+                document.getElementById('adminInterventionsView').style.display = 'none';
+                document.getElementById('clientInterventionsView').style.display = 'block';
+                document.getElementById('adminPiecesView').style.display = 'none';
+                document.getElementById('clientPiecesView').style.display = 'block';
+                document.getElementById('adminCommandesView').style.display = 'none';
+                document.getElementById('clientCommandesView').style.display = 'block';
+                
+                // Modifier les onglets pour le client
+                document.getElementById('pieces-tab').innerHTML = '<i class="fas fa-shopping-cart"></i> Commander Pièces';
+                document.getElementById('commandes-tab').innerHTML = '<i class="fas fa-list"></i> Mes Commandes';
+                
+                // Initialiser les formulaires client
+                setupClientForms();
+            }
+        }
+
+        // Initialiser les formulaires client
+        function setupClientForms() {
+            // Gestion du formulaire de commande de pièces
+            document.getElementById('pieceOrderForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitPieceOrder();
+            });
+            
+            // Gestion du formulaire de demande d'intervention
+            document.getElementById('interventionForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitInterventionRequest();
+            });
+        }
+        
+        // Soumettre une commande de pièce
+        function submitPieceOrder() {
+            const formData = {
+                machineName: document.getElementById('machineName').value,
+                serialNumber: document.getElementById('serialNumber').value,
+                pieceReference: document.getElementById('pieceReference').value,
+                urgency: document.getElementById('urgency').value,
+                image: document.getElementById('pieceImage').files[0],
+                date: new Date().toLocaleDateString('fr-FR'),
+                status: 'En attente'
+            };
+            
+            // Ajouter à la table des commandes client
+            addClientCommande(formData);
+            
+            // Réinitialiser le formulaire
+            document.getElementById('pieceOrderForm').reset();
+            
+            alert('Commande de pièce envoyée avec succès !');
+        }
+        
+        // Soumettre une demande d'intervention
+        function submitInterventionRequest() {
+            const formData = {
+                equipmentName: document.getElementById('equipmentName').value,
+                equipmentReference: document.getElementById('equipmentReference').value,
+                equipmentLocation: document.getElementById('equipmentLocation').value,
+                problemDescription: document.getElementById('problemDescription').value,
+                priority: document.getElementById('priority').value,
+                errorImage: document.getElementById('errorImage').files[0],
+                date: new Date().toLocaleDateString('fr-FR'),
+                status: 'Demande',
+                demandeur: currentUser.displayName
+            };
+            
+            // Ajouter à la table des interventions client
+            addClientIntervention(formData);
+            
+            // Ajouter aussi à la table admin pour que l'admin puisse voir
+            addAdminIntervention(formData);
+            
+            // Notifier l'admin
+            notifyAdmin(formData);
+            
+            // Réinitialiser le formulaire
+            document.getElementById('interventionForm').reset();
+            
+            alert('Demande d\'intervention envoyée avec succès !');
+        }
+        
+        // Ajouter une commande à la table client
+        function addClientCommande(data) {
+            const table = document.getElementById('clientCommandesTable');
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+                <td class="col-1">${data.date}</td>
+                <td class="col-2"><strong>${data.machineName}</strong></td>
+                <td class="col-3"><code>${data.pieceReference}</code></td>
+                <td class="col-4"><span class="badge bg-${getUrgencyBadge(data.urgency)}">${data.urgency}</span></td>
+                <td class="col-5"><span class="badge bg-warning">${data.status}</span></td>
+                <td class="col-6">
+                    <button class="btn btn-sm btn-primary" onclick="viewCommandeDetails(this)" title="Voir détails">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </td>
+            `;
+            
+            table.appendChild(row);
+        }
+        
+        // Ajouter une intervention à la table client
+        function addClientIntervention(data) {
+            const table = document.getElementById('clientInterventionsTable');
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+                <td class="col-1"><strong>${data.equipmentName}</strong><br><small>Réf: ${data.equipmentReference}</small></td>
+                <td class="col-2"><div style="max-width: 300px; word-wrap: break-word;">${data.problemDescription}</div></td>
+                <td class="col-3">${data.date}</td>
+                <td class="col-4"><span class="badge bg-${getPriorityBadge(data.priority)}">${data.priority}</span></td>
+                <td class="col-5"><span class="badge bg-primary">${data.status}</span></td>
+                <td class="col-6">
+                    <button class="btn btn-sm btn-primary" onclick="viewInterventionDetails(this)" title="Voir détails">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </td>
+            `;
+            
+            table.appendChild(row);
+        }
+        
+        // Ajouter une intervention à la table admin
+        function addAdminIntervention(data) {
+            const table = document.querySelector('#adminInterventionsView .clean-table tbody');
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+                <td class="col-1"><strong>${data.equipmentName}</strong><br><small>Réf: ${data.equipmentReference}</small></td>
+                <td class="col-2">
+                    <div>
+                        <span style="font-weight: 500;">${data.demandeur}</span><br>
+                        <small style="color: #6B7280;">Client</small>
+                    </div>
+                </td>
+                <td class="col-3">${data.date}</td>
+                <td class="col-4">${data.date}</td>
+                <td class="col-5"><span class="badge bg-primary">${data.status}</span></td>
+                <td class="col-6"><span class="badge bg-${getPriorityBadge(data.priority)}">${data.priority}</span></td>
+                <td class="col-7">
+                    <button class="btn btn-sm btn-warning" onclick="viewAdminInterventionDetails(this)" title="Voir détails">
+                        <i class="fas fa-eye"></i> Détails
+                    </button>
+                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Supprimer</button>
+                </td>
+            `;
+            
+            // Stocker les données complètes dans l'élément pour les récupérer plus tard
+            row.setAttribute('data-intervention', JSON.stringify(data));
+            
+            table.appendChild(row);
+        }
+        
+        // Obtenir la couleur du badge selon l'urgence
+        function getUrgencyBadge(urgency) {
+            switch(urgency) {
+                case 'urgente': return 'danger';
+                case 'haute': return 'warning';
+                default: return 'secondary';
+            }
+        }
+        
+        // Obtenir la couleur du badge selon la priorité
+        function getPriorityBadge(priority) {
+            switch(priority) {
+                case 'urgente': return 'danger';
+                case 'haute': return 'warning';
+                default: return 'secondary';
+            }
+        }
+        
+        // Voir les détails d'une commande
+        function viewCommandeDetails(button) {
+            const row = button.closest('tr');
+            const machineName = row.cells[1].textContent;
+            const reference = row.cells[2].textContent;
+            
+            alert(`Détails de la commande:\nMachine: ${machineName}\nRérérence: ${reference}\n\nCette fonctionnalité sera développée pour afficher tous les détails.`);
+        }
+        
+        // Voir les détails d'une intervention client
+        function viewInterventionDetails(button) {
+            const row = button.closest('tr');
+            const equipment = row.cells[0].textContent;
+            const problem = row.cells[1].textContent;
+            
+            alert(`Détails de l'intervention:\nÉquipement: ${equipment}\nProblème: ${problem}\n\nCette fonctionnalité sera développée pour afficher tous les détails.`);
+        }
+        
+        // Voir les détails d'une intervention admin
+        function viewAdminInterventionDetails(button) {
+            const row = button.closest('tr');
+            const interventionData = JSON.parse(row.getAttribute('data-intervention'));
+            
+            const details = `
+DÉTAILS DE L'INTERVENTION
+
+Équipement: ${interventionData.equipmentName}
+Référence: ${interventionData.equipmentReference}
+Localisation: ${interventionData.equipmentLocation || 'Non spécifiée'}
+Demandeur: ${interventionData.demandeur}
+Date: ${interventionData.date}
+Priorité: ${interventionData.priority}
+Statut: ${interventionData.status}
+
+DESCRIPTION DU PROBLÈME:
+${interventionData.problemDescription}
+
+${interventionData.errorImage ? '📷 Image jointe: Oui' : '📷 Image jointe: Non'}
+            `;
+            
+            alert(details);
+        }
+        
+        // Fonction pour notifier l'admin d'une nouvelle demande
+        function notifyAdmin(data) {
+            // Simuler une notification push
+            if (Notification.permission === 'granted') {
+                new Notification('Nouvelle Demande d\'Intervention', {
+                    body: `${data.demandeur} a créé une nouvelle demande pour ${data.equipmentName}`,
+                    icon: '/favicon.ico'
+                });
+            }
+            
+            // Simuler un email
+            console.log(`📧 Email envoyé à l'admin: Nouvelle demande d'intervention de ${data.demandeur}`);
+        }
+
+        // Test d'alignement automatique
+        function testAlignment() {
+            const tables = document.querySelectorAll('.clean-table');
+            tables.forEach((table, tableIndex) => {
+                const headers = table.querySelectorAll('th');
+                const firstRow = table.querySelector('tbody tr');
+                if (!firstRow) return;
+                
+                const cells = firstRow.querySelectorAll('td');
+                console.log(`=== Tableau ${tableIndex + 1} ===`);
+                console.log(`Headers: ${headers.length}, Cells: ${cells.length}`);
+                
+                headers.forEach((header, index) => {
+                    const cell = cells[index];
+                    if (cell) {
+                        const headerWidth = header.offsetWidth;
+                        const cellWidth = cell.offsetWidth;
+                        const difference = Math.abs(headerWidth - cellWidth);
+                        
+                        console.log(`Colonne ${index + 1}: Header=${headerWidth}px, Cell=${cellWidth}px, Différence=${difference}px`);
+                    }
+                });
+            });
+        }
+
+        // Test au chargement
+        window.addEventListener('load', () => {
+            // L'écran de connexion est affiché par défaut
+        });
+
+        // Test manuel
+        window.testAlignment = testAlignment;
+    </script>
+</body>
+</html> 
