@@ -1,0 +1,72 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.log
+
+# Fichiers de sauvegarde
+*.bak
+*.backup
+*~
+
+# Fichiers de développement
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers d'environnement
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Fichiers IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Fichiers de cache
+.cache/
+.parcel-cache/
+
+# Fichiers de build
+dist/
+build/
+out/
+
+# Fichiers de test
+coverage/
+.nyc_output/
+
+# Fichiers de documentation générés
+docs/
+
+# Fichiers de données sensibles
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Fichiers de base de données
+*.db
+*.sqlite
+*.sqlite3
+
+# Fichiers de logs
+logs/
+*.log
+
+# Fichiers de téléchargement
+downloads/
+uploads/
+
+# Fichiers de test
+test-files/
+sample-data/ 
